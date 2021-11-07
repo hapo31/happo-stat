@@ -1,9 +1,29 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import type { GetServerSideProps, NextPage } from "next";
+import { PrismaClient } from "@prisma/client";
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
 
-const Home: NextPage = () => {
+type RoomInfo = {
+  value: number;
+  createdAt: number;
+};
+
+type MotionInfo = {
+  createdAt: number;
+};
+
+type ServerProps = {
+  rooms: {
+    name: string;
+    temperatures: RoomInfo[];
+    humidities: RoomInfo[];
+    lights: RoomInfo[];
+    motions: MotionInfo[];
+  }[];
+};
+
+const Home = ({ rooms }: ServerProps) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -13,60 +33,85 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <h1>お部屋の情報</h1>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+        {rooms.map((room) => (
+          <>
+            <h2>{room.name}</h2>
+            <div>
+              <p>温度</p>
+              <ul>
+                {room.temperatures.map((item) => (
+                  <li key={item.createdAt}>{item.value}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p>湿度</p>
+              <ul>
+                {room.humidities.map((item) => (
+                  <li key={item.createdAt}>{item.value}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p>明るさ</p>
+              <ul>
+                {room.lights.map((item) => (
+                  <li key={item.createdAt}>{item.value}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p>人感センサー</p>
+              <ul>
+                {room.motions.map((item) => (
+                  <li key={item.createdAt}>{item.createdAt}</li>
+                ))}
+              </ul>
+            </div>
+          </>
+        ))}
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
+export const getServerSideProps: GetServerSideProps<ServerProps> = async (
+  context
+) => {
+  const prisma = new PrismaClient();
+
+  const rooms = await prisma.room.findMany({
+    include: {
+      motions: true,
+      humidities: true,
+      lights: true,
+      temperatures: true,
+    },
+  });
+
+  return {
+    props: {
+      rooms: rooms.map((room) => ({
+        name: room.name,
+        humidities: room.humidities.map((item) => ({
+          value: item.humidity,
+          createdAt: item.created_at.getTime(),
+        })),
+        temperatures: room.temperatures.map((item) => ({
+          value: item.temperature,
+          createdAt: item.created_at.getTime(),
+        })),
+        motions: room.motions.map((item) => ({
+          createdAt: item.created_at.getTime(),
+        })),
+        lights: room.lights.map((item) => ({
+          value: item.light,
+          createdAt: item.created_at.getTime(),
+        })),
+      })),
+    },
+  };
+};
