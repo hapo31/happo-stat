@@ -1,0 +1,54 @@
+datasource db {
+  url      = env("MYSQL_HOST")
+  database = env("MYSQL_DATABASE")
+  provider = "sqlite"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Room {
+  id Int @id @default(autoincrement())
+  name String @unique
+  temperatures TemperatureStat[]
+  humidities HumidityStat[]
+  lights LightStat[]
+  motions MotionStat[]
+}
+
+model TemperatureStat {
+  id Int @id @default(autoincrement())
+  roomId Int
+  room Room @relation(fields: [roomId], references: [id])
+  created_at DateTime @unique
+  temperature Float
+  @@index(fields: [roomId], name: "TemperatureStat_roomId_index")
+}
+
+model HumidityStat {
+  id Int @id @default(autoincrement())
+  roomId Int
+  room Room @relation(fields: [roomId], references: [id])
+  created_at DateTime @unique
+  humidity Float
+
+  @@index(fields: [roomId], name: "Thermostat_roomId_index")
+}
+
+model LightStat {
+  id Int @id @default(autoincrement())
+  roomId Int
+  room Room @relation(fields: [roomId], references: [id])
+  created_at DateTime @unique
+  light Float
+  @@index(fields: [roomId], name: "LightStat_roomId_index")
+}
+
+model MotionStat {
+  id Int @id @default(autoincrement())
+  roomId Int
+  room Room @relation(fields: [roomId], references: [id])
+  created_at DateTime @unique
+  @@index(fields: [roomId], name: "MotionStat_roomId_index")
+}
