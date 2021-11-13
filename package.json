@@ -29,7 +29,10 @@
     "eslint": "7",
     "eslint-config-next": "12.0.1",
     "prisma": "3.3.0",
+    "serverless": "^2.66.1",
+    "serverless-dotenv-plugin": "^3.10.0",
+    "serverless-plugin-typescript": "^2.1.0",
     "ts-node": "^10.4.0",
-    "typescript": "4.4.4"
+    "typescript": "^4.4.4"
   }
 }

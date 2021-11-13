@@ -1,7 +1,8 @@
-
-
 {
   "target": "es5",
   "module": "commonjs",
   "moduleResolution": "node",
+  "compilerOptions": {
+    "incremental": false,
+  },
 }

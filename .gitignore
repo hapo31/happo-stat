@@ -35,6 +35,7 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+.build
 
 .env*
 !.env.template

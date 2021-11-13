@@ -3,7 +3,7 @@ import config from "../src/config";
 
 import { Cloud } from "nature-remo";
 
-async function main() {
+export async function main() {
   const prisma = new PrismaClient();
   const remoClient = new Cloud(config.remo_token);
 

@@ -1,0 +1,52 @@
+service: happo31-stat
+frameworkVersion: "2"
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-dotenv-plugin
+
+custom:
+  serverlessPluginTypescript:
+    tsConfigFileLocation: "./batch/tsconfig.json"
+  dotenv:
+    path: .env
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  lambdaHashingVersion: 20201221
+  stage: dev
+  region: ap-northeast-1
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:ListBucket"
+        - "s3:GetObject"
+        - "s3:PutObject"
+        - "s3:DeleteObject"
+      Resource:
+        Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - "Ref": "ServerlessDeploymentBucket"
+            - "/*"
+  environment:
+    Bucket: stat-bucket-114514
+    REMO_TOKEN: ${env:REMO_TOKEN}
+
+# you can add packaging information here
+package:
+  patterns:
+    - "./*"
+    - "!node_modules/**"
+
+functions:
+  get-stat-remo:
+    handler: batch/index.main
+
+resources:
+  Resources:
+    Bucket:
+      Type: AWS::S3::Bucket
+      Prope rties:
+        BucketName: ${self:provider.environment.Bucket}
