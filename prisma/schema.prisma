@@ -1,7 +1,7 @@
 datasource db {
   url      = env("MYSQL_HOST")
   database = env("MYSQL_DATABASE")
-  provider = "sqlite"
+  provider = "mysql"
 }
 
 generator client {
