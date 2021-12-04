@@ -15,7 +15,7 @@
     "prisma:generate": "prisma generate deploy",
     "prisma:migrate": "prisma migrate dev --preview-feature --name",
     "prisma:deploy": "yarn prisma migrate deploy --preview-feature",
-    "postdeploy": "yarn prisma:deploy"
+    "heroku-postbuild": "yarn build && yarn prisma:deploy"
   },
   "dependencies": {
     "@prisma/client": "3.3.0",
