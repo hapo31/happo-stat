@@ -13,7 +13,9 @@
     "db:stop": "docker stop happo31-stat-mysql-server",
     "db:clean": "docker volume rm -f happo31-stat-mysql-volume",
     "prisma:generate": "prisma generate deploy",
-    "prisma:migrate": "prisma migrate dev --preview-feature --name"
+    "prisma:migrate": "prisma migrate dev --preview-feature --name",
+    "prisma:deploy": "yarn prisma migrate deploy --preview-feature",
+    "postdeploy": "yarn prisma:deploy"
   },
   "dependencies": {
     "@prisma/client": "3.3.0",
