@@ -1,6 +1,7 @@
 datasource db {
   url      = env("MYSQL_HOST")
   database = env("MYSQL_DATABASE")
+  shadowDatabaseUrl = env("SHADOW_DB_URL")
   provider = "mysql"
 }
 
@@ -21,7 +22,7 @@ model TemperatureStat {
   id Int @id @default(autoincrement())
   roomId Int
   room Room @relation(fields: [roomId], references: [id])
-  created_at DateTime @unique
+  created_at DateTime
   temperature Float
   @@index(fields: [roomId], name: "TemperatureStat_roomId_index")
 }
@@ -30,7 +31,7 @@ model HumidityStat {
   id Int @id @default(autoincrement())
   roomId Int
   room Room @relation(fields: [roomId], references: [id])
-  created_at DateTime @unique
+  created_at DateTime
   humidity Float
 
   @@index(fields: [roomId], name: "Thermostat_roomId_index")
@@ -40,7 +41,7 @@ model LightStat {
   id Int @id @default(autoincrement())
   roomId Int
   room Room @relation(fields: [roomId], references: [id])
-  created_at DateTime @unique
+  created_at DateTime
   light Float
   @@index(fields: [roomId], name: "LightStat_roomId_index")
 }

@@ -24,61 +24,41 @@ async function main() {
     });
   }
 
+  const now = new Date();
+
   try {
-    await prisma.temperatureStat.upsert({
-      where: {
-        created_at: newest_events.te.created_at,
-      },
-      update: {
-        temperature: newest_events.te.val,
-      },
-      create: {
+    await prisma.temperatureStat.create({
+      data: {
         roomId: roomInfo.id,
-        created_at: newest_events.te.created_at,
+        created_at: now,
         temperature: newest_events.te.val,
       },
     });
   } catch {}
 
   try {
-    await prisma.humidityStat.upsert({
-      where: {
-        created_at: newest_events.hu.created_at,
-      },
-      update: {
-        humidity: newest_events.hu.val,
-      },
-      create: {
+    await prisma.humidityStat.create({
+      data: {
         roomId: roomInfo.id,
-        created_at: newest_events.hu.created_at,
+        created_at: now,
         humidity: newest_events.hu.val,
       },
     });
   } catch {}
 
   try {
-    await prisma.lightStat.upsert({
-      where: {
-        created_at: newest_events.il.created_at,
-      },
-      update: {
-        light: newest_events.il.val,
-      },
-      create: {
+    await prisma.lightStat.create({
+      data: {
         roomId: roomInfo.id,
-        created_at: newest_events.il.created_at,
+        created_at: now,
         light: newest_events.il.val,
       },
     });
   } catch {}
 
   try {
-    await prisma.motionStat.upsert({
-      where: {
-        created_at: newest_events.il.created_at,
-      },
-      update: {},
-      create: {
+    await prisma.motionStat.create({
+      data: {
         roomId: roomInfo.id,
         // mo があるはずなのに型定義がない
         created_at: (newest_events as any)["mo"].created_at,
