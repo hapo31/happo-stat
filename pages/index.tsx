@@ -4,7 +4,7 @@ import React, { useMemo, useState } from "react";
 import fetch from "isomorphic-fetch";
 import * as df from "date-fns";
 import { RoomInfo } from "../src/domain/Stat";
-import { getStats, StatResponse } from "./api/stat";
+import { getStats } from "./api/stat";
 import { Chart } from "chart.js";
 import { Graph, LightGraph } from "../src/components/Graph";
 import useGraphData from "../src/hooks/useGraphData";
@@ -26,7 +26,7 @@ const Index = ({ rooms: initialRooms }: ServerProps) => {
   const [rooms, setRooms] = useState(initialRooms);
   const [roomSelect, setRoomSelect] = useState(0);
 
-  const room = useMemo(() => rooms[roomSelect], [roomSelect, rooms]);
+  const room = useMemo(() => rooms[roomSelect] ?? null, [roomSelect, rooms]);
 
   const [temperaturesAndHumidityGraphData, lightsGraphData] =
     useGraphData(room);
@@ -81,14 +81,16 @@ const Index = ({ rooms: initialRooms }: ServerProps) => {
         </select>
       </div>
       <div className="graph-container">
-        <Graph
-          data={temperaturesAndHumidityGraphData}
-          leftGraphID="temperatures"
-          rightGraphID="humidities"
-        />
+        {temperaturesAndHumidityGraphData != null && (
+          <Graph
+            data={temperaturesAndHumidityGraphData}
+            leftGraphID="temperatures"
+            rightGraphID="humidities"
+          />
+        )}
       </div>
       <div className="graph-container">
-        <LightGraph data={lightsGraphData} />
+        {lightsGraphData != null && <LightGraph data={lightsGraphData} />}
       </div>
 
       <style jsx>{`
