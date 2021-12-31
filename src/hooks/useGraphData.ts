@@ -12,7 +12,6 @@ export default function useGraphData(roomInfo: RoomInfo) {
       return temperatures != null && humidities != null
         ? {
             labels: temperatures.map((item) => item.createdAt),
-            // humidities.map((item) => item.createdAt),
             datasets: [
               {
                 fillColor: "#fcc",
