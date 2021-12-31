@@ -1,8 +1,8 @@
 datasource db {
-  url      = env("MYSQL_HOST")
+  url      = env("DATABASE_URL")
   database = env("MYSQL_DATABASE")
+  provider = "postgresql"
   shadowDatabaseUrl = env("SHADOW_DB_URL")
-  provider = "mysql"
 }
 
 generator client {

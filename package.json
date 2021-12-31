@@ -9,14 +9,14 @@
     "batch:run:dev": "ts-node --project ./batch/tsconfig.json ./batch/index.ts",
     "batch:run": "node dist/batch/index.js",
     "batch:build": "tsc --project ./batch/tsconfig.json --outDir dist",
-    "db:setup": "docker volume create happo31-stat-mysql-volume",
-    "db:start": "docker run --rm --name happo31-stat-mysql-server --volume happo31-stat-mysql-volume:/var/lib/mysql -p 3306:3306 --env-file=./.env -d mysql:latest",
+    "db:setup": "docker volume create happo31-stat-postgres-volume",
+    "db:start": "docker run --name happo31-stat-postgres-server --volume happo31-stat-postgres-volume:/var/lib/postgres/data -p 5432:5432 --env-file=./.env -d postgres:14.1-alpine",
     "db:connect": "mysql -h 127.0.0.1 -u local -p",
-    "db:stop": "docker stop happo31-stat-mysql-server",
+    "db:stop": "docker stop happo31-stat-postgres-server",
     "db:clean": "docker volume rm -f happo31-stat-mysql-volume",
     "prisma:generate": "prisma generate deploy",
-    "prisma:deploy": "yarn prisma migrate deploy --preview-feature",
     "prisma:migrate": "prisma migrate dev --preview-feature --name",
+    "prisma:deploy": "yarn prisma migrate deploy --preview-feature",
     "heroku-postbuild": "yarn build && yarn batch:build && yarn prisma:deploy"
   },
   "dependencies": {
