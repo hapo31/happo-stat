@@ -13,16 +13,16 @@ type ServerProps = {
   rooms: RoomInfo[];
 };
 
-Chart.defaults.elements.point.radius = 0;
+Chart.defaults.elements.point.radius = 4;
 Chart.defaults.elements.point.hitRadius = 5;
-Chart.defaults.elements.point.hoverRadius = 2;
-Chart.defaults.elements.point.hoverRadius = 2;
-Chart.defaults.font.size = 30;
+Chart.defaults.elements.point.hoverRadius = 6;
+Chart.defaults.font.size = 20;
 Chart.defaults.plugins.legend.title.color = "#eee";
 Chart.defaults.plugins.title.color = "#eee";
 Chart.defaults.aspectRatio = 2;
 
 const Index = ({ rooms: initialRooms }: ServerProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [rooms, setRooms] = useState(initialRooms);
   const [roomSelect, setRoomSelect] = useState(0);
 
@@ -66,13 +66,19 @@ const Index = ({ rooms: initialRooms }: ServerProps) => {
           </select>
         )}
         <select
+          disabled={isLoading}
           className="select period-select"
           onChange={async (e) => {
-            const periodDays = parseInt(e.target.value);
-            const period = df.subDays(new Date(), periodDays);
-            const res = await fetch(`/api/stat?period=${period.getTime()}`);
-            const data: RoomInfo[] = await res.json();
-            setRooms(data);
+            try {
+              setIsLoading(true);
+              const periodDays = parseInt(e.target.value);
+              const period = df.subDays(new Date(), periodDays);
+              const res = await fetch(`/api/stat?period=${period.getTime()}`);
+              const data: RoomInfo[] = await res.json();
+              setRooms(data);
+            } finally {
+              setIsLoading(false);
+            }
           }}
         >
           <option value="7">1週間</option>
