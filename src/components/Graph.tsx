@@ -1,4 +1,4 @@
-import { ChartData, ChartOptions } from "chart.js";
+import { ChartData } from "chart.js";
 import { useMemo } from "react";
 import { Line } from "react-chartjs-2";
 
@@ -43,7 +43,7 @@ export const Graph = ({ data, leftGraphID, rightGraphID }: Props) => {
               displayFormats: {
                 hour: "HH:mm",
               },
-              tooltipFormat: "MM/dd hh:mm",
+              tooltipFormat: "MM/dd HH:mm",
             },
             grid: {
               color: "#555",

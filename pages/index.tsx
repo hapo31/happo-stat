@@ -17,7 +17,7 @@ Chart.defaults.elements.point.radius = 4;
 Chart.defaults.elements.point.hitRadius = 5;
 Chart.defaults.elements.point.hoverRadius = 6;
 Chart.defaults.font.size = 20;
-Chart.defaults.plugins.legend.title.color = "#eee";
+Chart.defaults.color = "#eee";
 Chart.defaults.plugins.title.color = "#eee";
 Chart.defaults.aspectRatio = 2;
 
