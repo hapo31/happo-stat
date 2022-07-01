@@ -1,6 +1,5 @@
 datasource db {
   url      = env("DATABASE_URL")
-  database = env("MYSQL_DATABASE")
   provider = "postgresql"
   shadowDatabaseUrl = env("SHADOW_DB_URL")
 }
