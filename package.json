@@ -11,7 +11,7 @@
     "batch:build": "tsc --project ./batch/tsconfig.json --outDir dist",
     "db:setup": "docker volume create happo31-stat-postgres-volume",
     "db:start": "docker run --name happo31-stat-postgres-server --volume happo31-stat-postgres-volume:/var/lib/postgres/data -p 5432:5432 --env-file=./.env -d postgres:14.1-alpine",
-    "db:connect": "mysql -h 127.0.0.1 -u local -p",
+    "db:connect": "psql -h 127.0.0.1 -U local -W",
     "db:stop": "docker stop happo31-stat-postgres-server",
     "db:clean": "docker volume rm -f happo31-stat-mysql-volume",
     "prisma:generate": "prisma generate deploy",
