@@ -5,6 +5,44 @@ import { Cloud } from "nature-remo";
 
 async function main() {
   const prisma = new PrismaClient();
+
+  // 半年以上前のデータを消す
+  const period = new Date(Date.now() - 1000 * 60 * 60 * 24 * 120);
+
+  await Promise.all([
+    prisma.temperatureStat.deleteMany({
+      where: {
+        created_at: {
+          gte: period,
+        },
+      },
+    }),
+
+    prisma.humidityStat.deleteMany({
+      where: {
+        created_at: {
+          gte: period,
+        },
+      },
+    }),
+
+    prisma.lightStat.deleteMany({
+      where: {
+        created_at: {
+          gte: period,
+        },
+      },
+    }),
+
+    prisma.motionStat.deleteMany({
+      where: {
+        created_at: {
+          gte: period,
+        },
+      },
+    }),
+  ]);
+
   const remoClient = new Cloud(config.remo_token);
 
   const [event] = await remoClient.getDevices();
