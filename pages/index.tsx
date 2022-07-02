@@ -72,8 +72,7 @@ const Index = ({ rooms: initialRooms }: ServerProps) => {
             try {
               setIsLoading(true);
               const periodDays = parseInt(e.target.value);
-              const period = df.subDays(new Date(), periodDays);
-              const res = await fetch(`/api/stat?period=${period.getTime()}`);
+              const res = await fetch(`/api/stat?period=${periodDays}`);
               const data: RoomInfo[] = await res.json();
               setRooms(data);
             } finally {
@@ -84,6 +83,8 @@ const Index = ({ rooms: initialRooms }: ServerProps) => {
           <option value="7">1週間</option>
           <option value="14">2週間</option>
           <option value="30">1ヶ月</option>
+          <option value="90">3ヶ月</option>
+          <option value="180">6ヶ月</option>
         </select>
       </div>
       <div className="graph-container">
