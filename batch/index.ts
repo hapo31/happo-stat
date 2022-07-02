@@ -7,7 +7,7 @@ async function main() {
   const prisma = new PrismaClient();
 
   // 半年以上前のデータを消す
-  const period = new Date(Date.now() - 1000 * 60 * 60 * 24 * 120);
+  const period = new Date(Date.now() - 1000 * 60 * 60 * 24 * 180);
 
   await Promise.all([
     prisma.temperatureStat.deleteMany({
