@@ -13,7 +13,7 @@ async function main() {
     prisma.temperatureStat.deleteMany({
       where: {
         created_at: {
-          gte: period,
+          lte: period,
         },
       },
     }),
@@ -21,7 +21,7 @@ async function main() {
     prisma.humidityStat.deleteMany({
       where: {
         created_at: {
-          gte: period,
+          lte: period,
         },
       },
     }),
@@ -29,7 +29,7 @@ async function main() {
     prisma.lightStat.deleteMany({
       where: {
         created_at: {
-          gte: period,
+          lte: period,
         },
       },
     }),
@@ -37,7 +37,7 @@ async function main() {
     prisma.motionStat.deleteMany({
       where: {
         created_at: {
-          gte: period,
+          lte: period,
         },
       },
     }),
